@@ -41,7 +41,7 @@ console.log('config: ', config.get('db'));
       entities: [User, Profile, Roles, Logs],
       // 同步本地的schema 与数据库
       synchronize: true,
-      logging: ['error'],
+      logging: process.env.NODE_ENV === 'development',
     }),
     UserModule,
   ],

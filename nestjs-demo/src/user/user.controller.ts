@@ -35,4 +35,14 @@ export class UserController {
 
     return arr;
   }
+
+  @Get('/profile/:id')
+  getProfile(@Param('id') id: number): any {
+    return this.useService.findProfile(id);
+  }
+
+  @Get('logs/:id')
+  getUserLogs(@Param('id') id: number): any {
+    return this.useService.findUserLogs(id);
+  }
 }
