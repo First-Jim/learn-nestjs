@@ -3,12 +3,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entiry';
 import { Repository } from 'typeorm';
 import { Logs } from 'src/logs/logs.entity';
+import { Roles } from 'src/roles/roles.entity';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
     @InjectRepository(Logs) private logsRepository: Repository<Logs>,
+    @InjectRepository(Roles) private rolesRepository: Repository<Roles>,
   ) {}
 
   findAll() {
@@ -22,9 +24,20 @@ export class UserService {
     return this.userRepository.findOne({ where: { id } });
   }
 
-  async create(user: User): Promise<User> {
+  async create(user: Partial<User>): Promise<User> {
+    if (!user.roles) {
+      const role = await this.rolesRepository.findOne({
+        where: {
+          id: 2,
+        },
+      });
+      // 给用户一个默认的角色
+      user.roles = [role];
+    }
     const userTemp = this.userRepository.create(user);
-    return this.userRepository.save(userTemp);
+    const res = await this.userRepository.save(userTemp);
+    console.log('res: ', res);
+    return res;
   }
 
   async remove(id: number) {

@@ -9,6 +9,7 @@ import { User } from './user/user.entiry';
 import { Profile } from './user/profile.entity';
 import { Roles } from './roles/roles.entity';
 import { Logs } from './logs/logs.entity';
+import { AuthModule } from './auth/auth.module';
 console.log('config: ', config.get('db'));
 // ConfigModule.forRoot() 可以读取.env 的变量
 @Module({
@@ -44,6 +45,7 @@ console.log('config: ', config.get('db'));
       logging: process.env.NODE_ENV === 'development',
     }),
     UserModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],
